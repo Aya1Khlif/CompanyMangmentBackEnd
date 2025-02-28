@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AboutUsResource extends Resource
 {
     protected static ?string $model = AboutUs::class;
-    protected static ?string $modelLabel = 'About Us';
-    protected static ?string $navigationLabel = 'About Us';
+    protected static ?string $modelLabel = 'About';
+    protected static ?string $navigationLabel = 'About';
 
     protected static ?string $navigationIcon = 'heroicon-s-information-circle';
 

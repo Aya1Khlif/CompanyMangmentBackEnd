@@ -3,62 +3,73 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
+    protected static ?string $modelLabel = 'Projects';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Projects';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->maxLength(255),
+                    ->label('Title')
+                    ->maxLength(255)
+                    ->required(),
+
                 Forms\Components\TextInput::make('sub_title')
+                    ->label('Subtitle')
                     ->maxLength(255),
+
                 Forms\Components\Textarea::make('description')
+                    ->label('Description')
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                    Forms\Components\FileUpload::make('image')
-                    ->label('Upload Image')
+
+                Forms\Components\FileUpload::make('image')
+                    ->label('Upload Main Image')
                     ->preserveFilenames()
                     ->directory('images/Product')
                     ->imageEditor()
                     ->getUploadedFileNameForStorageUsing(
-                        fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                            ->prepend(now()->timestamp),
+                        fn(TemporaryUploadedFile $file): string => now()->timestamp . '_' . $file->getClientOriginalName(),
                     )
                     ->openable()
                     ->downloadable()
                     ->required(),
-                    Forms\Components\FileUpload::make('card_image')
+
+                Forms\Components\FileUpload::make('card_image')
                     ->label('Upload Card Image')
                     ->preserveFilenames()
-                    ->directory('image/Product')
+                    ->directory('images/Product')
                     ->imageEditor()
                     ->getUploadedFileNameForStorageUsing(
-                        fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                            ->prepend(now()->timestamp),
+                        fn(TemporaryUploadedFile $file): string => now()->timestamp . '_' . $file->getClientOriginalName(),
                     )
                     ->openable()
                     ->downloadable()
                     ->required(),
+
                 Forms\Components\TextInput::make('client')
+                    ->label('Client')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('status'),
+
+                Forms\Components\TextInput::make('status')
+                    ->label('Status'),
+
                 Forms\Components\TextInput::make('link')
+                    ->label('Link')
                     ->maxLength(255),
             ]);
     }
@@ -68,28 +79,43 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('sub_title')
+                    ->label('Subtitle')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\ImageColumn::make('card_image'),
+
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Main Image'),
+
+                Tables\Columns\ImageColumn::make('card_image')
+                    ->label('Card Image'),
+
                 Tables\Columns\TextColumn::make('client')
+                    ->label('Client')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status'),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status'),
+
                 Tables\Columns\TextColumn::make('link')
+                    ->label('Link')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Updated At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -103,9 +129,7 @@ class ProductResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
