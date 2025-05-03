@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('about_us', function (Blueprint $table) {
             $table->id();
-            $table->string('company_name')->nullable();
-            $table->text('about_company')->nullable();
+            $table->string('company_name');
+            $table->text('about_company');
             $table->string('phone')->nullable();
             $table->string('phone2')->nullable();
             $table->string('email')->nullable();
@@ -27,9 +27,10 @@ return new class extends Migration
             $table->string('telegram')->nullable();
             $table->string('logo')->nullable();
             $table->date('established_date')->nullable();
-            $table->string('status',)->nullable();
+            $table->string('status')->nullable();
             $table->string('meta_title')->nullable();
-            $table->string('meta_description')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

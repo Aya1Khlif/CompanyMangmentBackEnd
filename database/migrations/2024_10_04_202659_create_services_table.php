@@ -14,12 +14,13 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->string('title');
             $table->string('sub_title')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->string('card_image')->nullable();
-            $table->enum('status',Status::getValues())->default(Status::Active)->nullable();
+            $table->string('status')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -27,5 +27,12 @@ class AboutUs extends Model
         'status',
         'meta_title',
         'meta_description',
+        'user_id', 
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
